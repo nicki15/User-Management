@@ -1,0 +1,5 @@
+USER_ADDED_SUCCESSFULLY = 'The User was added successfully'
+EMAIL_ALREADY_EXISTS = 'The provided email already exists in the database'
+UNKNOWN_ERROR = 'An unknown error occured'
+DATABASE_CREATED = 'The database was created successfully'
+DATABASE_ALREADY_EXISTS = 'The database already exists'
