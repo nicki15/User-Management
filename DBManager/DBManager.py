@@ -1,6 +1,7 @@
 import sqlite3
 import os
-import hashlib, binascii
+import hashlib
+import binascii
 
 from helpers import configuration
 from helpers import statusmessage
