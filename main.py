@@ -6,7 +6,7 @@ from database.models import db
 
 from helpers import configuration
 from resources.UserRegistration import UserRegistration
-
+from resources.UserLogin import UserLogin
 
 jwt = JWTManager()
 
@@ -31,6 +31,7 @@ def register_extensions(_app: Flask):
 def setup_api_endpoints(_app: Flask):
     api = Api(_app)
     api.add_resource(UserRegistration, '/registration')
+    api.add_resource(UserLogin, '/login')
 
 
 def setup_database(_app: Flask):

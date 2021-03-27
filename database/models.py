@@ -29,8 +29,9 @@ class User(db.Model):
     def set_password(self, password):
         self.password = generate_password_hash(password=password, salt_length=32)
 
-    def check_password(self, password):
-        return check_password_hash(self.password, password)
+    @staticmethod
+    def check_password(password, _hash):
+        return check_password_hash(pwhash=_hash, password=password)
 
     def __repr__(self):
         return f"User: [name: {self.name}, email={self.email}, user_id={self.id}]"
