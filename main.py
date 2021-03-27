@@ -2,7 +2,7 @@ from flask import Flask
 from flask_jwt_extended import JWTManager
 from flask_restful import Api
 
-from database.database import db
+from database.models import db
 
 from helpers import configuration
 from resources.UserRegistration import UserRegistration

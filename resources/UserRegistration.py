@@ -1,7 +1,7 @@
 from flask_restful import Resource, reqparse
 from flask_jwt_extended import create_access_token, create_refresh_token
 
-from database.database import User
+from database.models import User
 
 #
 # Sets up a parser of the http request that comes into the API
