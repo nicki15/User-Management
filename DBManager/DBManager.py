@@ -32,20 +32,20 @@ def add_newuser(name: str, email: str, pw: str) -> tuple:
             db_connection.commit()
             return True, statusmessage.USER_ADDED_SUCCESSFULLY
         return False, statusmessage.EMAIL_ALREADY_EXISTS
-    except:
+    except Exception:
         return False, statusmessage.UNKNOWN_ERROR
     finally:
         db_connection.close()
 
 
-def get_user_by_id(id: int) -> tuple:
+def get_user_by_id(_id: int) -> tuple:
     """
     returns none if there is no user with this id
     """
     db_connection = sqlite3.connect(configuration.DB_NAME)
     cursor = db_connection.cursor()
     stmt = 'SELECT * FROM User WHERE id = {}'
-    query = cursor.execute(stmt.format(id))
+    query = cursor.execute(stmt.format(_id))
     result = query.fetchone()
     return result
 
@@ -72,7 +72,7 @@ def __is_email_unique__(cursor: sqlite3.Cursor, email: str) -> bool:
 def __hash_passwort__(pw: str) -> str:
     salt = hashlib.sha256(os.urandom(60)).hexdigest().encode('ascii')
     # print("salt: ",salt)
-    pw_hash = hashlib.pbkdf2_hmac("sha512",pw.encode("utf-8"),salt,100000)
+    pw_hash = hashlib.pbkdf2_hmac("sha512", pw.encode("utf-8"), salt, 100000)
     pw_hash = binascii.hexlify(pw_hash)
     # print("pw_hash:",pw_hash)
     return (salt+pw_hash).decode("ascii")

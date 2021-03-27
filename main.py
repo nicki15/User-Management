@@ -2,9 +2,9 @@ import json
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
+from datetime import datetime
 
 from helpers import configuration
-from DBManager.DBManager import create_database, add_newuser, get_user_by_id, get_user_by_email
 
 
 app = Flask(__name__)
@@ -16,11 +16,13 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 db = SQLAlchemy(app=app)
 
+
 class User(db.Model):
     id = db.Column('user_id', db.Integer, primary_key=True)
     name = db.Column(db.String(), unique=True)
     email = db.Column(db.String(), unique=True)
     password = db.Column(db.String())
+    register_date = db.Column(db.DateTime())
 
     def __repr__(self):
         return f"User: [name: {self.name}, email={self.email}, user_id={self.id}]"
@@ -28,9 +30,10 @@ class User(db.Model):
     def __init__(self, name, email):
         self.name = name
         self.email = email
+        self.register_date = datetime.now()
 
     def set_password(self, password):
-        self.password = generate_password_hash(password)
+        self.password = generate_password_hash(password=password, salt_length=32)
 
     def check_password(self, password):
         return check_password_hash(self.password, password)
