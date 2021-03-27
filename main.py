@@ -1,6 +1,7 @@
 import json
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
+from werkzeug.security import generate_password_hash, check_password_hash
 
 from helpers import configuration
 from DBManager.DBManager import create_database, add_newuser, get_user_by_id, get_user_by_email
@@ -9,6 +10,7 @@ from DBManager.DBManager import create_database, add_newuser, get_user_by_id, ge
 
 app = Flask(__name__)
 
+app.config["SECRET_KEY"] = configuration.SECRET_KEY
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///" + configuration.DB_NAME
 
 db = SQLAlchemy(app=app)
@@ -17,12 +19,17 @@ class User(db.Model):
     id = db.Column('user_id', db.Integer, primary_key = True)
     name = db.Column(db.String(), unique = True)
     email = db.Column(db.String(), unique = True)
-    passwort = db.Column(db.String())
+    password = db.Column(db.String())
 
-    def __init__(self, name, email, passwort):
+    def __init__(self, name, email):
         self.name = name
         self.email = email
-        self.passwort = passwort
+
+    def set_password(self, password):
+        self.password = generate_password_hash(password)
+
+    def check_password(self, password):
+        return check_password_hash(self.password, password)
 
 
 @app.route("/")
@@ -37,7 +44,8 @@ def add_user():
     #pw = data['pw']
     #query_result = add_newuser(name, email, pw)
     try:
-        user = User(name=data['name'], email=data['email'], passwort=data['pw'])
+        user = User(name=data['name'], email=data['email'])
+        user.set_password(data['pw'])
         db.session.add(user)
         db.session.commit()
         message = "User successfully added"
