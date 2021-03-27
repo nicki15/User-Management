@@ -33,13 +33,13 @@ def setup_api_endpoints(_app: Flask):
     api.add_resource(UserRegistration, '/registration')
 
 
-def setup_datebase(_app: Flask):
+def setup_database(_app: Flask):
     with _app.app_context():
         db.create_all()
 
 
 if __name__ == "__main__":
     flask_app = create_app()
-    setup_datebase(_app=flask_app)
+    setup_database(_app=flask_app)
     setup_api_endpoints(_app=flask_app)
     flask_app.run(port=8080, debug=True)
