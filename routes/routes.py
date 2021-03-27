@@ -18,11 +18,9 @@ def add_user():
     try:
         user = User(name=data['name'], email=data['email'])
         user.set_password(data['pw'])
-        db.session.add(user)
-        db.session.commit()
+        user.save_to_db()
         message = "User successfully added"
     except Exception as ex:
-        print(ex)
         message = "User already exists"
     finally:
         return_code = 404 if 'already exists' in message else 200
