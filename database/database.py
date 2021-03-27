@@ -22,6 +22,10 @@ class User(db.Model):
         db.session.add(self)
         db.session.commit()
 
+    @classmethod
+    def find_by_username(cls, username: str):
+        return cls.query.filter_by(name=username).first()
+
     def set_password(self, password):
         self.password = generate_password_hash(password=password, salt_length=32)
 
