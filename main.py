@@ -5,6 +5,7 @@ from flask_restful import Api
 from database.models import db
 
 from helpers import configuration
+from resources.Maintenance import Maintenance
 from resources.UserRegistration import UserRegistration
 from resources.UserLogin import UserLogin
 from resources.UserLogout import UserLogout
@@ -30,7 +31,8 @@ def register_extensions(_app: Flask):
 
 
 def setup_api_endpoints(_app: Flask):
-    api = Api(_app)
+    api = Api(_app, prefix="/v1/user-management")
+    api.add_resource(Maintenance, '/status')
     api.add_resource(UserRegistration, '/registration')
     api.add_resource(UserLogin, '/login')
     api.add_resource(UserLogout, '/logout')
