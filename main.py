@@ -7,6 +7,7 @@ from database.models import db
 from helpers import configuration
 from resources.UserRegistration import UserRegistration
 from resources.UserLogin import UserLogin
+from resources.UserLogout import UserLogout
 
 jwt = JWTManager()
 
@@ -32,6 +33,7 @@ def setup_api_endpoints(_app: Flask):
     api = Api(_app)
     api.add_resource(UserRegistration, '/registration')
     api.add_resource(UserLogin, '/login')
+    api.add_resource(UserLogout, '/logout')
 
 
 def setup_database(_app: Flask):
